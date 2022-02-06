@@ -9,11 +9,11 @@
 <body>
     <p>Username: {{ username }}</p>
         <div id="chat-messages">
+            {% for m in messages %}<p><b>{{ m.username }}</b>: {{ m.content }}</p><br>{% endfor %}
         </div>
 
         <input class="input" type="text" placeholder="Message" id="chat-message-input">
-        <a class="button" id="chat-message-submit">Submit</a>
-        <input type="button" value="">
+        <input type="button" value="submit" id="chat-message-submit">
 </body>
     {{ room_name|json_script:"json-roomname" }}
     {{ username|json_script:"json-username" }}
@@ -41,30 +41,30 @@
         const data = JSON.parse(e.data);
 
         if (data.message) {
-        document.querySelector('#chat-messages').innerHTML += ('' + data.username + ': ' + data.message + '');
+            document.querySelector('#chat-messages').innerHTML += ('<p>' + data.username + ': ' + data.message + '</p>');
         } else {
-        alert('The message was empty!')
+            alert('The message was empty!')
         }
         };
 
         document.querySelector('#chat-message-input').focus();
         document.querySelector('#chat-message-input').onkeyup = function(e) {
-        if (e.keyCode === 13) {
-        document.querySelector('#chat-message-submit').click();
-        }
+            if (e.keyCode === 13) {
+                document.querySelector('#chat-message-submit').click();
+            }
         };
 
         document.querySelector('#chat-message-submit').onclick = function(e) {
-        const messageInputDom = document.querySelector('#chat-message-input');
-        const message = messageInputDom.value;
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
 
-        chatSocket.send(JSON.stringify({
-            'message': message,
-            'username': userName,
-            'room': roomName
-        }));
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'username': userName,
+                'room': roomName
+            }));
 
-        messageInputDom.value = '';
+            messageInputDom.value = '';
         };
 
     </script>
