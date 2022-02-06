@@ -9,7 +9,7 @@
 <body>
     <p>Username: {{ username }}</p>
         <div id="chat-messages">
-            {% for m in messages %}<p><b>{{ m.username }}</b>: {{ m.content }}</p><br>{% endfor %}
+            {% for m in messages %}<p>{{ m.username }}: {{ m.content }}</p>{% endfor %}
         </div>
 
         <input class="input" type="text" placeholder="Message" id="chat-message-input">
