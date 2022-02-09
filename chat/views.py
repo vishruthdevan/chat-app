@@ -37,3 +37,19 @@ def room(request, room_name):
          'username': username,
          'messages': messages
          })
+
+
+class Signup(View):
+    def get(self, request):
+        form = forms.RegisterForm()
+        return render(request, "chat/signup.html", {'form': form})
+
+    def post(self, request):
+        form = forms.RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = User.objects.get(username=request.POST['username'])
+            login(self.request, user)
+            return redirect(reverse('index'))
+        else:
+            return render(self.request, 'chat/signup.html', {'form': form})
