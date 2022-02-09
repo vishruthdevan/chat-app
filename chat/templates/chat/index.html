@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+</head>
+
+<body>
+    <h3>Chat App</h3>
+
+    {% if user.is_authenticated %}
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        <input class="input" type="text" name="room_name" placeholder="Room name" id="room-name-input">
+        <input class="input" type="password" name="password" placeholder="Password" id="password-input">
+        <input type="submit" id="room-name-submit" value="submit">
+    </form>
+
+    {% for room in rooms %}
+    <li>{{ room.name }}</li>
+    {% endfor %}
+
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'signup' %}">Signup</a>
+    {% endif %}
+</body>
+
+
+</html>

@@ -13,5 +13,27 @@ from better_profanity import profanity
 
 
 def index(request):
+    if request.method == "POST":
+        if not Room.objects.filter(name=request.POST['room_name']).first():
+            Room.objects.create(
+                name=request.POST['room_name'], password=request.POST['password'])
+            return redirect(reverse('room', kwargs={'room_name': request.POST['room_name']}))
+        else:
+            room = Room.objects.get(name=request.POST.get('room_name'))
+            if request.POST['password'] == room.password:
+                return redirect(reverse('room', kwargs={'room_name': request.POST['room_name']}))
+    rooms = Room.objects.all()
+    return render(request, 'chat/index.html', {'rooms': rooms})
 
-    return render(request, 'chat/index.html')
+
+@login_required
+def room(request, room_name):
+    username = request.user.username
+    messages = Message.objects.filter(room=room_name)[0:25]
+    profanity.load_censor_words()
+    return render(
+        request, 'chat/room.html',
+        {'room_name': room_name,
+         'username': username,
+         'messages': messages
+         })
