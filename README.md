@@ -1,2 +1,2 @@
-# gdsc-tasks
-Repository for the Round 3 tasks for the GDSC recruitments
+# chat-app
+A simple chat app using django channels and websockets
